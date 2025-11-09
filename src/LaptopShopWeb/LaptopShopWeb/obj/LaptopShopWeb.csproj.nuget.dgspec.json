@@ -4,14 +4,153 @@
     "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/LaptopShopWeb.csproj": {}
   },
   "projects": {
-    "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/LaptopShopWeb.csproj": {
+    "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.BLL/LaptopShopWeb.BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/LaptopShopWeb.csproj",
-        "projectName": "LaptopShopWeb",
-        "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/LaptopShopWeb.csproj",
+        "projectUniqueName": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.BLL/LaptopShopWeb.BLL.csproj",
+        "projectName": "LaptopShopWeb.BLL",
+        "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.BLL/LaptopShopWeb.BLL.csproj",
         "packagesPath": "/Users/tranduytai/.nuget/packages/",
-        "outputPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/obj/",
+        "outputPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.BLL/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/tranduytai/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.DAL/LaptopShopWeb.DAL.csproj": {
+                "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.DAL/LaptopShopWeb.DAL.csproj"
+              },
+              "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj": {
+                "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.DAL/LaptopShopWeb.DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.DAL/LaptopShopWeb.DAL.csproj",
+        "projectName": "LaptopShopWeb.DAL",
+        "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.DAL/LaptopShopWeb.DAL.csproj",
+        "packagesPath": "/Users/tranduytai/.nuget/packages/",
+        "outputPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.DAL/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/tranduytai/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj": {
+                "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj",
+        "projectName": "LaptopShopWeb.Entity",
+        "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj",
+        "packagesPath": "/Users/tranduytai/.nuget/packages/",
+        "outputPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/tranduytai/.nuget/NuGet/NuGet.Config"
@@ -43,6 +182,80 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/LaptopShopWeb.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/LaptopShopWeb.csproj",
+        "projectName": "LaptopShopWeb",
+        "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/LaptopShopWeb.csproj",
+        "packagesPath": "/Users/tranduytai/.nuget/packages/",
+        "outputPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/tranduytai/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.BLL/LaptopShopWeb.BLL.csproj": {
+                "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.BLL/LaptopShopWeb.BLL.csproj"
+              },
+              "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj": {
+                "projectPath": "/Users/tranduytai/Documents/project_ASP.NET /ChiHang/src/LaptopShopWeb/LaptopShopWeb.Entity/LaptopShopWeb.Entity.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.10, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
