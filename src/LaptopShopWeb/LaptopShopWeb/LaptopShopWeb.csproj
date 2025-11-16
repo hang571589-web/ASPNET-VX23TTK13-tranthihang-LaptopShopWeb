@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LaptopShopWeb.BLL\LaptopShopWeb.BLL.csproj" />
+      <ProjectReference Include="..\LaptopShopWeb.DAL\LaptopShopWeb.DAL.csproj" />
       <ProjectReference Include="..\LaptopShopWeb.Entity\LaptopShopWeb.Entity.csproj" />
     </ItemGroup>
 
