@@ -1,0 +1,144 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+<div class="container my-5">
+    <h2 class="fw-bold mb-4">
+        <i class="fas fa-credit-card text-red"></i> Thanh toán
+    </h2>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> @Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card-custom p-4 mb-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-shipping-fast"></i> Thông tin giao hàng
+                </h5>
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Input.ShippingAddress" class="form-label">Địa chỉ giao hàng</label>
+                        <input asp-for="Input.ShippingAddress" class="form-control" 
+                               placeholder="Số nhà, tên đường, phường/xã...">
+                        <span asp-validation-for="Input.ShippingAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.City" class="form-label">Thành phố / Tỉnh</label>
+                            <input asp-for="Input.City" class="form-control" placeholder="Hà Nội">
+                            <span asp-validation-for="Input.City" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.PhoneNumber" class="form-label">Số điện thoại</label>
+                            <input asp-for="Input.PhoneNumber" class="form-control" placeholder="0912345678">
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Input.Notes" class="form-label">Ghi chú đơn hàng (tùy chọn)</label>
+                        <textarea asp-for="Input.Notes" class="form-control" rows="3" 
+                                  placeholder="Ghi chú về đơn hàng của bạn..."></textarea>
+                    </div>
+
+                    <div class="card bg-light p-3 mb-4">
+                        <h6 class="fw-bold mb-2">
+                            <i class="fas fa-money-bill-wave"></i> Phương thức thanh toán
+                        </h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="cod" checked>
+                            <label class="form-check-label" for="cod">
+                                <strong>Thanh toán khi nhận hàng (COD)</strong>
+                                <div>
+                                    <small class="text-muted">
+                                        Thanh toán bằng tiền mặt khi nhận hàng
+                                    </small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary-custom btn-lg py-3">
+                            <i class="fas fa-check-circle"></i> Đặt hàng
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card-custom p-4 sticky-top" style="top: 20px;">
+                <h5 class="fw-bold mb-3">Đơn hàng của bạn</h5>
+
+                <div class="mb-3" style="max-height: 300px; overflow-y: auto;">
+                    @foreach (var item in Model.Cart.Items)
+                    {
+                        <div class="d-flex mb-3 pb-3 border-bottom">
+                            <img src="@(item.ProductImageUrl ?? "/images/no-image.jpg")" 
+                                 class="rounded me-3" 
+                                 style="width: 60px; height: 60px; object-fit: cover;"
+                                 alt="@item.ProductName">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">@item.ProductName</h6>
+                                @if (!string.IsNullOrEmpty(item.VariantDisplayName))
+                                {
+                                    <small class="text-muted d-block">@item.VariantDisplayName</small>
+                                }
+                                <small class="text-muted">Số lượng: @item.Quantity</small>
+                            </div>
+                            <div class="text-end">
+                                <strong class="text-red">@item.TotalPrice.ToString("N0") ₫</strong>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tạm tính:</span>
+                    <strong>@Model.Cart.TotalAmount.ToString("N0") ₫</strong>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Phí vận chuyển:</span>
+                    <strong class="text-success">Miễn phí</strong>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <h5 class="fw-bold mb-0">Tổng cộng:</h5>
+                    <h5 class="fw-bold text-red mb-0">@Model.Cart.TotalAmount.ToString("N0") ₫</h5>
+                </div>
+
+                <div class="alert alert-info">
+                    <small>
+                        <i class="fas fa-info-circle"></i>
+                        Đơn hàng sẽ được xử lý trong 1-2 ngày làm việc
+                    </small>
+                </div>
+
+                <a asp-page="/Cart/Index" class="btn btn-outline-custom w-100">
+                    <i class="fas fa-arrow-left"></i> Quay lại giỏ hàng
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
