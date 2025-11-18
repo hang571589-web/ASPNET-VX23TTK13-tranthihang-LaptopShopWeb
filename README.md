@@ -37,38 +37,43 @@ git clone https://github.com/hang571589-web/ASPNET-VX23TTK13-tranthihang-LaptopS
 cd ASPNET-VX23TTK13-tranthihang-LaptopShopWeb
 ```
 
-### 2. Khởi động Database
+### 2. Cấu hình môi trường
+Sao chép file `.env.example` thành `.env` và cập nhật thông tin nếu cần:
 ```bash
-cd docker
+cp .env.example .env
+```
+
+### 3. Khởi động Database với Docker
+```bash
 docker-compose up -d
 ```
 
-### 3. Cấu hình Connection String
-Cập nhật file `src/LaptopShopWeb/LaptopShopWeb/appsettings.json`:
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Host=localhost;Port=5432;Database=laptopshop;Username=postgres;Password=postgres123"
-}
-```
+Database sẽ chạy với cấu hình từ file `.env`:
+- Host: localhost
+- Port: 5432
+- Database: laptopshop
+- Username: postgres
+- Password: postgres123
 
-### 4. Chạy Migration (sau khi thiết lập EF Core)
+### 4. Kết nối Database với DBeaver
+Xem hướng dẫn chi tiết tại [DBEAVER_CONNECTION.md](DBEAVER_CONNECTION.md)
+
+### 5. Chạy Migration
 ```bash
-cd src/LaptopShopWeb
+cd src/LaptopShopWeb/LaptopShopWeb
 dotnet ef database update
 ```
 
-### 5. Chạy ứng dụng
+### 6. Chạy ứng dụng
 ```bash
-cd src/LaptopShopWeb/LaptopShopWeb
 dotnet run
 ```
 
-Truy cập: `https://localhost:5001`
+Truy cập: `http://localhost:5277`
 
 ## 🗄️ Quản lý Database
-- **PgAdmin**: http://localhost:5050
-  - Email: `admin@laptopshop.com`
-  - Password: `admin123`
+- **DBeaver**: Sử dụng DBeaver để kết nối và quản lý database (xem [DBEAVER_CONNECTION.md](DBEAVER_CONNECTION.md))
+- Connection info từ file `.env`
 
 ## 📝 Tính năng đã thực hiện
 - [x] Setup project structure với kiến trúc phân lớp
