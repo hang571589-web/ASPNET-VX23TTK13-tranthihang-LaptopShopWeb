@@ -1,0 +1,214 @@
+@page
+@model LaptopShopWeb.Pages.Admin.Products.IndexModel
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h1 class="admin-title">
+                <i class="fas fa-laptop"></i> Quản lý sản phẩm
+            </h1>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-page="Create" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Thêm sản phẩm mới
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Filter Section -->
+    <div class="card admin-card mb-3">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+                </div>
+                <div class="col-md-3">
+                    <select name="categoryId" class="form-select">
+                        <option value="">-- Tất cả danh mục --</option>
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <option value="@cat.Id" selected="@(Model.CategoryId == cat.Id)">@cat.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="status" class="form-select">
+                        <option value="">-- Tất cả --</option>
+                        <option value="active" selected="@(Model.Status == "active")">Kích hoạt</option>
+                        <option value="inactive" selected="@(Model.Status == "inactive")">Vô hiệu</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                    </button>
+                    <a asp-page="Index" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i> Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card admin-card">
+        <div class="card-body">
+            @if (Model.Products.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Hình ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th>Giá</th>
+                                <th>Tồn kho</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td>@product.Id</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                        {
+                                            <img src="@product.ImageUrl" alt="@product.Name" class="product-thumb">
+                                        }
+                                        else
+                                        {
+                                            <div class="product-thumb-placeholder">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <strong>@product.Name</strong>
+                                        @if (product.IsFeatured)
+                                        {
+                                            <br><span class="badge bg-warning"><i class="fas fa-star"></i> Nổi bật</span>
+                                        }
+                                    </td>
+                                    <td>@product.CategoryName</td>
+                                    <td><strong>@product.Price.ToString("N0") VNĐ</strong></td>
+                                    <td>
+                                        @if (product.StockQuantity > 10)
+                                        {
+                                            <span class="badge bg-success">@product.StockQuantity</span>
+                                        }
+                                        else if (product.StockQuantity > 0)
+                                        {
+                                            <span class="badge bg-warning">@product.StockQuantity</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Hết hàng</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (product.IsActive)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> Kích hoạt
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="fas fa-times"></i> Vô hiệu
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-page="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-warning" title="Chỉnh sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal@(product.Id)" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal@(product.Id)" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Xác nhận xóa</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Bạn có chắc chắn muốn xóa sản phẩm <strong>@product.Name</strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                        <form method="post" asp-page-handler="Delete" asp-route-id="@product.Id" class="d-inline">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fas fa-trash"></i> Xóa
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-laptop fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Không tìm thấy sản phẩm nào.</p>
+                    <a asp-page="Create" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> Tạo sản phẩm đầu tiên
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+.product-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+.product-thumb-placeholder {
+    width: 60px;
+    height: 60px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: #999;
+}
+</style>

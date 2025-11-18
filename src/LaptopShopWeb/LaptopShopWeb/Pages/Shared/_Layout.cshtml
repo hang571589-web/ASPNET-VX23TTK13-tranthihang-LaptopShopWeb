@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
@@ -41,16 +42,29 @@
                                 </a>
                             </li>
 
-                            @if (AuthHelper.IsInRole(User, "Manager"))
+                            @if (AuthHelper.IsInRole(User, "Admin"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                        <i class="fas fa-cog"></i> Quản lý
+                                        <i class="fas fa-cog"></i> Quản trị
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Sản phẩm</a></li>
-                                        <li><a class="dropdown-item" href="#">Danh mục</a></li>
-                                        <li><a class="dropdown-item" href="#">Đơn hàng</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Index">
+                                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                                        </a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Products/Index">
+                                            <i class="fas fa-laptop"></i> Sản phẩm
+                                        </a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Categories/Index">
+                                            <i class="fas fa-tags"></i> Danh mục
+                                        </a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Orders/Index">
+                                            <i class="fas fa-shopping-cart"></i> Đơn hàng
+                                        </a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Users/Index">
+                                            <i class="fas fa-users"></i> Người dùng
+                                        </a></li>
                                     </ul>
                                 </li>
                             }

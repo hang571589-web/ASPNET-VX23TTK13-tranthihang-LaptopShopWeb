@@ -33,7 +33,7 @@ public class IndexModel : PageModel
             return RedirectToPage("/Login");
         }
 
-        Cart = await _cartService.GetCartWithDetailsAsync(userId.Value);
+        Cart = await _cartService.GetCartWithDetailsAsync(userId.Value) ?? new CartDto();
         return Page();
     }
 

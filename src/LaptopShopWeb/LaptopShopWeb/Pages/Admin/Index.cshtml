@@ -1,0 +1,190 @@
+@page
+@model LaptopShopWeb.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Quản trị - Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="admin-title">
+                <i class="fas fa-tachometer-alt"></i> Dashboard Quản Trị
+            </h1>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card stat-card-primary">
+                <div class="stat-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@Model.TotalOrders</div>
+                    <div class="stat-label">Tổng đơn hàng</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card stat-card-success">
+                <div class="stat-icon">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@Model.TotalProducts</div>
+                    <div class="stat-label">Tổng sản phẩm</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card stat-card-info">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@Model.TotalUsers</div>
+                    <div class="stat-label">Tổng người dùng</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card stat-card-warning">
+                <div class="stat-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@Model.TotalCategories</div>
+                    <div class="stat-label">Danh mục</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue Card -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card admin-card">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="fas fa-dollar-sign text-success"></i> Doanh thu
+                    </h3>
+                    <h2 class="text-success">@Model.TotalRevenue.ToString("N0") VNĐ</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card admin-card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-clock"></i> Đơn hàng gần đây
+                    </h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentOrders.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã đơn</th>
+                                        <th>Khách hàng</th>
+                                        <th>Ngày đặt</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model.RecentOrders)
+                                    {
+                                        <tr>
+                                            <td><strong>@order.OrderNumber</strong></td>
+                                            <td>@order.UserName</td>
+                                            <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td><strong>@order.TotalAmount.ToString("N0") VNĐ</strong></td>
+                                            <td>
+                                                <span class="badge bg-@GetStatusBadgeClass(order.Status)">
+                                                    @order.StatusDisplay
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a asp-page="/Admin/Orders/Details" asp-route-id="@order.Id" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Không có đơn hàng nào.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card admin-card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-bolt"></i> Thao tác nhanh
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a asp-page="/Admin/Products/Create" class="btn btn-success btn-lg w-100 mb-2">
+                                <i class="fas fa-plus-circle"></i><br>
+                                Thêm sản phẩm mới
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a asp-page="/Admin/Categories/Create" class="btn btn-primary btn-lg w-100 mb-2">
+                                <i class="fas fa-plus-circle"></i><br>
+                                Thêm danh mục mới
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a asp-page="/Admin/Orders/Index" class="btn btn-warning btn-lg w-100 mb-2">
+                                <i class="fas fa-list"></i><br>
+                                Xem đơn hàng
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a asp-page="/Admin/Users/Index" class="btn btn-info btn-lg w-100 mb-2">
+                                <i class="fas fa-users"></i><br>
+                                Quản lý người dùng
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Pending" => "warning",
+            "Processing" => "info",
+            "Shipped" => "primary",
+            "Delivered" => "success",
+            "Cancelled" => "danger",
+            _ => "secondary"
+        };
+    }
+}
