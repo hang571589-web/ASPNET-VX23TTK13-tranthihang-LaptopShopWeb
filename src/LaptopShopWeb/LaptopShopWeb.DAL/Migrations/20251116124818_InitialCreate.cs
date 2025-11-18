@@ -233,11 +233,6 @@ namespace LaptopShopWeb.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Address", "City", "CreatedAt", "Email", "FullName", "IsActive", "LastLoginAt", "PasswordHash", "PhoneNumber", "PostalCode", "Role", "UpdatedAt" },
-                values: new object[] { 1, "123 Admin Street", "Ho Chi Minh City", new DateTime(2024, 11, 16, 0, 0, 0, 0, DateTimeKind.Utc), "admin@laptopshop.com", "Administrator", true, null, "AQAAAAIAAYagAAAAEFakeHashForAdminUser123456789", "0123456789", null, "Admin", null });
-
-            migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "Brand", "CPU", "CategoryId", "Color", "CreatedAt", "Description", "DiscountPrice", "GraphicsCard", "ImageUrl", "IsActive", "IsFeatured", "Name", "OperatingSystem", "Price", "RAM", "Screen", "Slug", "StockQuantity", "Storage", "UpdatedAt", "ViewCount", "Weight" },
                 values: new object[,]

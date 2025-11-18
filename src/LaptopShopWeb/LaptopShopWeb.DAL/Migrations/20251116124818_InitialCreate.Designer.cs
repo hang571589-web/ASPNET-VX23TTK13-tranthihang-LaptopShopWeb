@@ -673,21 +673,6 @@ namespace LaptopShopWeb.DAL.Migrations
                     b.HasIndex("Role");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "123 Admin Street",
-                            City = "Ho Chi Minh City",
-                            CreatedAt = new DateTime(2024, 11, 16, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "admin@laptopshop.com",
-                            FullName = "Administrator",
-                            IsActive = true,
-                            PasswordHash = "AQAAAAIAAYagAAAAEFakeHashForAdminUser123456789",
-                            PhoneNumber = "0123456789",
-                            Role = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("LaptopShopWeb.Entity.Order", b =>

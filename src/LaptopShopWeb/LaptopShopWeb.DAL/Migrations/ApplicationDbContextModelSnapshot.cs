@@ -829,9 +829,22 @@ namespace LaptopShopWeb.DAL.Migrations
                             Email = "admin@laptopshop.com",
                             FullName = "Administrator",
                             IsActive = true,
-                            PasswordHash = "AQAAAAIAAYagAAAAEFakeHashForAdminUser123456789",
+                            PasswordHash = "$2a$11$9bIBlTrCHumoYs1INYZ7h.1kMnYBwQtJ.5WBsjfgpK/NxYAEmXMLW",
                             PhoneNumber = "0123456789",
                             Role = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "456 Customer Street",
+                            City = "Hanoi",
+                            CreatedAt = new DateTime(2024, 11, 16, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "customer@test.com",
+                            FullName = "Test Customer",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$bmGYq9YBj7zcdk9W6ZDXXeQL1RJ3ja4IvkcR9mFlPGb8IsA1LHS5u",
+                            PhoneNumber = "0987654321",
+                            Role = "Customer"
                         });
                 });
 

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LaptopShopWeb.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251118073940_AddCartAndVariants")]
-    partial class AddCartAndVariants
+    [Migration("20251118093427_SeedUserData")]
+    partial class SeedUserData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -821,6 +821,34 @@ namespace LaptopShopWeb.DAL.Migrations
                     b.HasIndex("Role");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "123 Admin Street",
+                            City = "Ho Chi Minh City",
+                            CreatedAt = new DateTime(2024, 11, 16, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "admin@laptopshop.com",
+                            FullName = "Administrator",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$9bIBlTrCHumoYs1INYZ7h.1kMnYBwQtJ.5WBsjfgpK/NxYAEmXMLW",
+                            PhoneNumber = "0123456789",
+                            Role = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "456 Customer Street",
+                            City = "Hanoi",
+                            CreatedAt = new DateTime(2024, 11, 16, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "customer@test.com",
+                            FullName = "Test Customer",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$bmGYq9YBj7zcdk9W6ZDXXeQL1RJ3ja4IvkcR9mFlPGb8IsA1LHS5u",
+                            PhoneNumber = "0987654321",
+                            Role = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("LaptopShopWeb.Entity.Cart", b =>
