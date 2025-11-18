@@ -60,11 +60,15 @@ public class Product : BaseEntity
 
     public int ViewCount { get; set; } = 0;
 
+    public bool HasVariants { get; set; } = false;
+
     // Foreign Keys
     public int CategoryId { get; set; }
 
     // Navigation Properties
     public virtual Category Category { get; set; } = null!;
+    public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
+    public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
