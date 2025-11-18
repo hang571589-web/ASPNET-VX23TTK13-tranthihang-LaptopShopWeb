@@ -1,0 +1,231 @@
+@page
+@model DetailsModel
+@{
+    ViewData["Title"] = Model.Product.Name;
+}
+
+<div class="container my-5">
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> @Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> @Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <nav aria-label="breadcrumb" class="breadcrumb-custom">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-page="/Products/Index">Sản phẩm</a></li>
+            <li class="breadcrumb-item active">@Model.Product.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Product Images -->
+        <div class="col-md-5">
+            <div class="card-custom p-3">
+                <img src="@(Model.Product.ImageUrl ?? "/images/no-image.jpg")" 
+                     class="img-fluid rounded" 
+                     alt="@Model.Product.Name">
+                
+                @if (Model.Product.Images.Any())
+                {
+                    <div class="row g-2 mt-3">
+                        @foreach (var image in Model.Product.Images.Take(4))
+                        {
+                            <div class="col-3">
+                                <img src="@image.ImageUrl" class="img-fluid rounded" alt="Image">
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-7">
+            <div class="card-custom p-4">
+                <h2 class="fw-bold mb-3">@Model.Product.Name</h2>
+                
+                @if (!string.IsNullOrEmpty(Model.Product.Brand))
+                {
+                    <p class="mb-3">
+                        <span class="badge bg-dark fs-6">
+                            <i class="fas fa-tag"></i> @Model.Product.Brand
+                        </span>
+                    </p>
+                }
+
+                @if (Model.Product.Reviews.Any())
+                {
+                    <div class="mb-3">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            if (i < Model.Product.AverageRating)
+                            {
+                                <i class="fas fa-star text-warning fs-5"></i>
+                            }
+                            else
+                            {
+                                <i class="far fa-star text-warning fs-5"></i>
+                            }
+                        }
+                        <span class="ms-2">
+                            <strong>@Model.Product.AverageRating.ToString("0.0")</strong>
+                            (@Model.Product.ReviewCount đánh giá)
+                        </span>
+                    </div>
+                }
+
+                <div class="price display-4 fw-bold mb-4">
+                    @Model.Product.Price.ToString("N0") ₫
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Product.Description))
+                {
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-2">Mô tả sản phẩm</h5>
+                        <p class="text-muted">@Model.Product.Description</p>
+                    </div>
+                }
+
+                <form method="post" asp-page-handler="AddToCart" asp-route-id="@Model.Product.Id">
+                    @if (Model.Product.HasVariants && Model.Product.Variants.Any())
+                    {
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3">
+                                <i class="fas fa-cog text-red"></i> Chọn cấu hình
+                            </h5>
+                            <div class="list-group">
+                                @foreach (var variant in Model.Product.Variants.Where(v => v.IsActive))
+                                {
+                                    <label class="list-group-item list-group-item-action">
+                                        <div class="d-flex align-items-center">
+                                            <input type="radio" 
+                                                   name="SelectedVariantId" 
+                                                   value="@variant.Id" 
+                                                   class="form-check-input me-3"
+                                                   required>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold">@variant.DisplayName</div>
+                                                <small class="text-muted">
+                                                    Kho: @variant.StockQuantity
+                                                    @if (!string.IsNullOrEmpty(variant.SKU))
+                                                    {
+                                                        <span>| SKU: @variant.SKU</span>
+                                                    }
+                                                </small>
+                                            </div>
+                                            <div class="text-red fw-bold fs-5">
+                                                @variant.Price.ToString("N0") ₫
+                                            </div>
+                                        </div>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-2">Số lượng</h5>
+                        <div class="input-group" style="max-width: 150px;">
+                            <button class="btn btn-outline-secondary" type="button" onclick="decrementQty()">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" 
+                                   asp-for="Quantity" 
+                                   class="form-control text-center" 
+                                   min="1" 
+                                   max="10" 
+                                   id="quantity">
+                            <button class="btn btn-outline-secondary" type="button" onclick="incrementQty()">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary-custom btn-lg py-3">
+                            <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                        </button>
+                        <a asp-page="/Products/Index" class="btn btn-outline-custom">
+                            <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Product.Reviews.Any())
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card-custom p-4">
+                    <h4 class="fw-bold mb-4">
+                        <i class="fas fa-comments text-red"></i> Đánh giá từ khách hàng
+                    </h4>
+                    @foreach (var review in Model.Product.Reviews.OrderByDescending(r => r.CreatedAt).Take(5))
+                    {
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <strong>@review.UserName</strong>
+                                    <div>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            if (i < review.Rating)
+                                            {
+                                                <i class="fas fa-star text-warning"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star text-warning"></i>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <small class="text-muted">@review.CreatedAt.ToString("dd/MM/yyyy")</small>
+                            </div>
+                            @if (!string.IsNullOrEmpty(review.Comment))
+                            {
+                                <p class="mt-2 mb-0">@review.Comment</p>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function incrementQty() {
+            var input = document.getElementById('quantity');
+            var max = parseInt(input.max);
+            var current = parseInt(input.value);
+            if (current < max) {
+                input.value = current + 1;
+            }
+        }
+        
+        function decrementQty() {
+            var input = document.getElementById('quantity');
+            var min = parseInt(input.min);
+            var current = parseInt(input.value);
+            if (current > min) {
+                input.value = current - 1;
+            }
+        }
+    </script>
+}

@@ -1,18 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using LaptopShopWeb.BLL.Services;
+using LaptopShopWeb.BLL.DTOs;
 
 namespace LaptopShopWeb.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    private readonly IProductService _productService;
+    private readonly ICategoryService _categoryService;
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public IndexModel(IProductService productService, ICategoryService categoryService)
     {
-        _logger = logger;
+        _productService = productService;
+        _categoryService = categoryService;
     }
 
-    public void OnGet()
+    public List<ProductDto> FeaturedProducts { get; set; } = new();
+    public List<CategoryDto> Categories { get; set; } = new();
+
+    public async Task OnGetAsync()
     {
+        FeaturedProducts = await _productService.GetFeaturedProductsAsync();
+        Categories = await _categoryService.GetActiveCategoriesAsync();
     }
 }

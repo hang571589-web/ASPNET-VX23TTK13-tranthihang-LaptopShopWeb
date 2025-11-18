@@ -1,0 +1,147 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Sản phẩm";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Sidebar Filter -->
+        <div class="col-md-3">
+            <div class="card-custom p-3 mb-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-filter text-red"></i> Bộ lọc
+                </h5>
+                
+                <!-- Search -->
+                <form method="get" class="mb-4">
+                    <div class="input-group">
+                        <input type="text" 
+                               name="searchTerm" 
+                               class="form-control form-control-custom" 
+                               placeholder="Tìm kiếm..." 
+                               value="@Model.SearchTerm">
+                        <button class="btn btn-primary-custom" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Categories -->
+                <h6 class="fw-bold mb-3">Danh mục</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a asp-page="/Products/Index" 
+                           class="text-decoration-none @(Model.CategoryId == null ? "text-red fw-bold" : "")">
+                            <i class="fas fa-angle-right"></i> Tất cả sản phẩm
+                        </a>
+                    </li>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li class="mb-2">
+                            <a asp-page="/Products/Index" 
+                               asp-route-categoryId="@category.Id"
+                               class="text-decoration-none @(Model.CategoryId == category.Id ? "text-red fw-bold" : "")">
+                                <i class="fas fa-angle-right"></i> @category.Name
+                                <span class="badge bg-secondary float-end">@category.ProductCount</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">
+                    @if (!string.IsNullOrEmpty(Model.SearchTerm))
+                    {
+                        <span>Kết quả tìm kiếm: "@Model.SearchTerm"</span>
+                    }
+                    else if (Model.CategoryId.HasValue)
+                    {
+                        var category = Model.Categories.FirstOrDefault(c => c.Id == Model.CategoryId.Value);
+                        <span>@category?.Name</span>
+                    }
+                    else
+                    {
+                        <span>Tất cả sản phẩm</span>
+                    }
+                </h2>
+                <span class="text-muted">@Model.Products.Count sản phẩm</span>
+            </div>
+
+            @if (Model.Products.Any())
+            {
+                <div class="row g-4">
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card-custom h-100 fade-in">
+                                <div class="position-relative">
+                                    <img src="@(product.ImageUrl ?? "/images/no-image.jpg")" 
+                                         class="card-img-top" 
+                                         alt="@product.Name">
+                                    @if (product.IsFeatured)
+                                    {
+                                        <span class="badge-featured position-absolute top-0 end-0 m-2">
+                                            <i class="fas fa-star"></i> Nổi bật
+                                        </span>
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.Name</h5>
+                                    @if (!string.IsNullOrEmpty(product.Brand))
+                                    {
+                                        <p class="card-text text-muted mb-2">
+                                            <span class="badge bg-dark">@product.Brand</span>
+                                        </p>
+                                    }
+                                    <div class="price mb-2">@product.Price.ToString("N0") ₫</div>
+                                    
+                                    @if (product.Reviews.Any())
+                                    {
+                                        <div class="mb-2">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                if (i < product.AverageRating)
+                                                {
+                                                    <i class="fas fa-star text-warning"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="far fa-star text-warning"></i>
+                                                }
+                                            }
+                                            <small class="text-muted">(@product.ReviewCount)</small>
+                                        </div>
+                                    }
+                                    
+                                    <div class="d-grid">
+                                        <a asp-page="/Products/Details" 
+                                           asp-route-id="@product.Id" 
+                                           class="btn btn-primary-custom">
+                                            <i class="fas fa-eye"></i> Xem chi tiết
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-inbox fa-5x text-muted mb-3"></i>
+                    <h4>Không tìm thấy sản phẩm nào</h4>
+                    <p class="text-muted">Vui lòng thử tìm kiếm với từ khóa khác</p>
+                    <a asp-page="/Products/Index" class="btn btn-primary-custom">
+                        <i class="fas fa-redo"></i> Xem tất cả sản phẩm
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
