@@ -1,0 +1,162 @@
+@page
+@model DetailsModel
+@{
+    ViewData["Title"] = $"Đơn hàng #{Model.Order.Id.ToString("D6")}";
+}
+
+<div class="container my-5">
+    <nav aria-label="breadcrumb" class="breadcrumb-custom mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-page="/Orders/Index">Đơn hàng</a></li>
+            <li class="breadcrumb-item active">#@Model.Order.Id.ToString("D6")</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Order Status -->
+            <div class="card-custom p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">
+                        <i class="fas fa-receipt text-red"></i> Đơn hàng #@Model.Order.Id.ToString("D6")
+                    </h4>
+                    @switch (Model.Order.Status)
+                    {
+                        case "Pending":
+                            <span class="badge bg-warning fs-6 px-3 py-2">
+                                <i class="fas fa-clock"></i> Chờ xử lý
+                            </span>
+                            break;
+                        case "Processing":
+                            <span class="badge bg-info fs-6 px-3 py-2">
+                                <i class="fas fa-cog fa-spin"></i> Đang xử lý
+                            </span>
+                            break;
+                        case "Shipping":
+                            <span class="badge bg-primary fs-6 px-3 py-2">
+                                <i class="fas fa-truck"></i> Đang giao hàng
+                            </span>
+                            break;
+                        case "Delivered":
+                            <span class="badge bg-success fs-6 px-3 py-2">
+                                <i class="fas fa-check"></i> Đã giao hàng
+                            </span>
+                            break;
+                        case "Cancelled":
+                            <span class="badge bg-danger fs-6 px-3 py-2">
+                                <i class="fas fa-times"></i> Đã hủy
+                            </span>
+                            break;
+                    }
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <small class="text-muted">Ngày đặt hàng</small>
+                        <div class="fw-bold">@Model.Order.OrderDate.ToString("dd/MM/yyyy HH:mm")</div>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="text-muted">Người nhận</small>
+                        <div class="fw-bold">@Model.Order.CustomerName</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="card-custom p-4 mb-4">
+                <h5 class="fw-bold mb-3">Sản phẩm đã đặt</h5>
+                @foreach (var item in Model.Order.Items)
+                {
+                    <div class="border-bottom pb-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-2">
+                                <img src="@(item.ProductImageUrl ?? "/images/no-image.jpg")" 
+                                     class="img-fluid rounded" 
+                                     alt="@item.ProductName">
+                            </div>
+                            <div class="col-md-5">
+                                <h6 class="fw-bold mb-1">@item.ProductName</h6>
+                                @if (!string.IsNullOrEmpty(item.VariantDisplayName))
+                                {
+                                    <small class="text-muted">
+                                        <i class="fas fa-cog"></i> @item.VariantDisplayName
+                                    </small>
+                                }
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <div class="text-muted small">Số lượng</div>
+                                <div class="fw-bold">x@item.Quantity</div>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <div class="text-muted small">Thành tiền</div>
+                                <div class="fw-bold text-red">@item.TotalPrice.ToString("N0") ₫</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Shipping Info -->
+            <div class="card-custom p-4 mb-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-shipping-fast"></i> Thông tin giao hàng
+                </h5>
+                <div class="mb-2">
+                    <small class="text-muted d-block">Địa chỉ</small>
+                    <div>@Model.Order.ShippingAddress</div>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted d-block">Thành phố</small>
+                    <div>@Model.Order.City</div>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted d-block">Số điện thoại</small>
+                    <div>@Model.Order.PhoneNumber</div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Order.Notes))
+                {
+                    <div class="mt-3 pt-3 border-top">
+                        <small class="text-muted d-block">Ghi chú</small>
+                        <div class="fst-italic">@Model.Order.Notes</div>
+                    </div>
+                }
+            </div>
+
+            <!-- Order Summary -->
+            <div class="card-custom p-4">
+                <h5 class="fw-bold mb-3">Tổng đơn hàng</h5>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tạm tính (@Model.Order.TotalItems sản phẩm):</span>
+                    <strong>@Model.Order.TotalAmount.ToString("N0") ₫</strong>
+                </div>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Phí vận chuyển:</span>
+                    <strong class="text-success">Miễn phí</strong>
+                </div>
+                
+                <hr>
+                
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="fw-bold mb-0">Tổng cộng:</h5>
+                    <h5 class="fw-bold text-red mb-0">@Model.Order.TotalAmount.ToString("N0") ₫</h5>
+                </div>
+
+                <div class="alert alert-info mb-0">
+                    <small>
+                        <i class="fas fa-money-bill-wave"></i>
+                        Thanh toán khi nhận hàng (COD)
+                    </small>
+                </div>
+            </div>
+
+            <a asp-page="/Orders/Index" class="btn btn-outline-custom w-100 mt-3">
+                <i class="fas fa-arrow-left"></i> Quay lại danh sách
+            </a>
+        </div>
+    </div>
+</div>
