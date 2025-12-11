@@ -22,6 +22,7 @@ public static class EntityMapper
             IsFeatured = product.IsFeatured,
             HasVariants = product.HasVariants,
             Brand = product.Brand,
+            CreatedAt = product.CreatedAt,
             Variants = product.ProductVariants?.Select(v => v.ToDto()).ToList() ?? new(),
             Images = product.ProductImages?.Select(i => i.ToDto()).ToList() ?? new(),
             Reviews = product.Reviews?.Select(r => r.ToDto()).ToList() ?? new()

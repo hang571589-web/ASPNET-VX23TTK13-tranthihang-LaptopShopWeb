@@ -78,7 +78,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
         return await _dbSet
             .Include(p => p.Category)
             .Include(p => p.ProductVariants)
-            .Where(p => p.HasVariants && p.IsActive)
+            .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
     }
 }

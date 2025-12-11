@@ -14,6 +14,7 @@ public class ProductDto
     public bool IsFeatured { get; set; }
     public bool HasVariants { get; set; }
     public string? Brand { get; set; }
+    public DateTime CreatedAt { get; set; }
     
     public List<ProductVariantDto> Variants { get; set; } = new();
     public List<ProductImageDto> Images { get; set; } = new();

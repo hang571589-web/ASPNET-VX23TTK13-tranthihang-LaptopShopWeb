@@ -5,72 +5,114 @@
 }
 
 <div class="container my-5">
-    <div class="row">
-        <!-- Sidebar Filter -->
-        <div class="col-md-3">
-            <div class="card-custom p-3 mb-4">
-                <h5 class="fw-bold mb-3">
-                    <i class="fas fa-filter text-red"></i> Bộ lọc
-                </h5>
-                
-                <!-- Search -->
-                <form method="get" class="mb-4">
-                    <div class="input-group">
-                        <input type="text" 
-                               name="searchTerm" 
-                               class="form-control form-control-custom" 
-                               placeholder="Tìm kiếm..." 
-                               value="@Model.SearchTerm">
-                        <button class="btn btn-primary-custom" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
+    <form method="get">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card-custom p-3 mb-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-filter text-red"></i> Bộ lọc
+                    </h5>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-muted" for="searchTerm">Tìm kiếm</label>
+                        <div class="input-group">
+                            <input type="text"
+                                   name="SearchTerm"
+                                   id="searchTerm"
+                                   class="form-control form-control-custom"
+                                   placeholder="Tìm kiếm..."
+                                   value="@Model.SearchTerm">
+                            <button class="btn btn-primary-custom" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
-                </form>
 
-                <!-- Categories -->
-                <h6 class="fw-bold mb-3">Danh mục</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-2">
-                        <a asp-page="/Products/Index" 
-                           class="text-decoration-none @(Model.CategoryId == null ? "text-red fw-bold" : "")">
-                            <i class="fas fa-angle-right"></i> Tất cả sản phẩm
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-2">Danh mục</h6>
+                        @foreach (var option in Model.CategoryFilters)
+                        {
+                            <div class="form-check mb-2">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="SelectedCategories"
+                                       value="@option.Key"
+                                       id="category-@option.Key"
+                                       @(Model.IsCategoryChecked(option.Key) ? "checked" : null)>
+                                <label class="form-check-label d-flex justify-content-between" for="category-@option.Key">
+                                    <span>@option.Label</span>
+                                    <span class="text-muted">(@option.Count)</span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-2">Thương hiệu</h6>
+                        @foreach (var option in Model.BrandFilters)
+                        {
+                            <div class="form-check mb-2">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="SelectedBrands"
+                                       value="@option.Key"
+                                       id="brand-@option.Key"
+                                       @(Model.IsBrandChecked(option.Key) ? "checked" : null)>
+                                <label class="form-check-label d-flex justify-content-between" for="brand-@option.Key">
+                                    <span>@option.Label</span>
+                                    <span class="text-muted">(@option.Count)</span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-2">Khoảng giá</h6>
+                        @foreach (var option in Model.PriceRanges)
+                        {
+                            <div class="form-check mb-2">
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="PriceRange"
+                                       id="price-@option.Key"
+                                       value="@option.Key"
+                                       @(Model.IsPriceRangeSelected(option.Key) ? "checked" : null)>
+                                <label class="form-check-label" for="price-@option.Key">@option.Label</label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-filter"></i> Áp dụng bộ lọc
+                        </button>
+                        <a asp-page="/Products/Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-undo"></i> Xóa bộ lọc
                         </a>
-                    </li>
-                    @foreach (var category in Model.Categories)
-                    {
-                        <li class="mb-2">
-                            <a asp-page="/Products/Index" 
-                               asp-route-categoryId="@category.Id"
-                               class="text-decoration-none @(Model.CategoryId == category.Id ? "text-red fw-bold" : "")">
-                                <i class="fas fa-angle-right"></i> @category.Name
-                                <span class="badge bg-secondary float-end">@category.ProductCount</span>
-                            </a>
-                        </li>
-                    }
-                </ul>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Products Grid -->
-        <div class="col-md-9">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0">
-                    @if (!string.IsNullOrEmpty(Model.SearchTerm))
-                    {
-                        <span>Kết quả tìm kiếm: "@Model.SearchTerm"</span>
-                    }
-                    else if (Model.CategoryId.HasValue)
-                    {
-                        var category = Model.Categories.FirstOrDefault(c => c.Id == Model.CategoryId.Value);
-                        <span>@category?.Name</span>
-                    }
-                    else
-                    {
-                        <span>Tất cả sản phẩm</span>
-                    }
-                </h2>
-                <span class="text-muted">@Model.Products.Count sản phẩm</span>
-            </div>
+            <div class="col-md-9">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h2 class="mb-1">
+                            @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+                            {
+                                <span>Kết quả cho: "@Model.SearchTerm"</span>
+                            }
+                            else
+                            {
+                                <span>Tất cả sản phẩm</span>
+                            }
+                        </h2>
+                        <span class="text-muted">@Model.Products.Count sản phẩm</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="fw-semibold mb-0" for="SortOption">Sắp xếp</label>
+                        <select class="form-select form-select-sm w-auto" asp-for="SortOption" asp-items="Model.SortOptions" onchange="this.form.submit()"></select>
+                    </div>
+                </div>
 
             @if (Model.Products.Any())
             {
@@ -143,5 +185,6 @@
                 </div>
             }
         </div>
-    </div>
+        </div>
+    </form>
 </div>
