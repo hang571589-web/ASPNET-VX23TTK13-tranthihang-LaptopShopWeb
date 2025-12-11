@@ -1,101 +1,202 @@
-# LaptopShopWeb - ASP.NET Core Project
+# LaptopShopWeb - E-commerce Website
 
-## 📋 Giới thiệu
-Đồ án xây dựng website bán laptop sử dụng ASP.NET Core với kiến trúc phân lớp (Layered Architecture).
+## 📋 Mô tả Project
 
-## 👥 Thông tin
-- **Sinh viên thực hiện**: Trần Thị Hằng
-- **Lớp**: VX23TTK13
-- **Môn học**: ASP.NET
+Website bán laptop với đầy đủ tính năng quản lý sản phẩm, giỏ hàng, đặt hàng và quản trị hệ thống. Xây dựng bằng ASP.NET Core 9.0 với kiến trúc phân lớp (Layered Architecture).
 
-## 🏗️ Kiến trúc dự án
-```
-LaptopShopWeb/
-├── LaptopShopWeb/          # Web layer (Presentation)
-├── LaptopShopWeb.BLL/      # Business Logic Layer
-├── LaptopShopWeb.DAL/      # Data Access Layer
-└── LaptopShopWeb.Entity/   # Entity/Model Layer
-```
+**Sinh viên**: Trần Thị Hằng - Lớp VX23TTK13
 
-## 🛠️ Công nghệ sử dụng
-- **Framework**: ASP.NET Core 9.0
-- **Database**: PostgreSQL 16
-- **ORM**: Entity Framework Core
-- **UI**: Razor Pages
+## 🛠️ Công nghệ
+
+- **Backend**: ASP.NET Core 9.0, Entity Framework Core 9.0
+- **Database**: PostgreSQL 15
+- **Frontend**: Razor Pages, Bootstrap 5
+- **Authentication**: Cookie-based với BCrypt
 - **Container**: Docker & Docker Compose
 
-## 📦 Yêu cầu hệ thống
-- .NET 9.0 SDK
-- Docker Desktop
-- Visual Studio 2022 / VS Code / JetBrains Rider
+## ✨ Tính năng
 
-## 🚀 Hướng dẫn cài đặt
+### Khách hàng
 
-### 1. Clone repository
+- Xem danh sách sản phẩm, tìm kiếm, lọc theo danh mục
+- Xem chi tiết sản phẩm với variants (CPU, RAM, Storage)
+- Thêm vào giỏ hàng, cập nhật số lượng
+- Đặt hàng với thông tin giao hàng
+- Xem lịch sử đơn hàng
+- Quản lý tài khoản, đổi mật khẩu
+
+### Quản trị viên
+
+- Dashboard với thống kê tổng quan
+- Quản lý danh mục: CRUD operations
+- Quản lý sản phẩm: CRUD operations với filter/search
+- Quản lý người dùng: phân quyền, kích hoạt/vô hiệu hóa
+- Quản lý đơn hàng: cập nhật trạng thái theo workflow
+- Xem chi tiết đơn hàng
+
+## � Hướng dẫn chạy Project
+
+### Yêu cầu
+
+- .NET 9.0 SDK ([Download](https://dotnet.microsoft.com/download/dotnet/9.0))
+- Docker Desktop ([Download](https://www.docker.com/products/docker-desktop))
+
+### Bước 1: Clone repository
+
 ```bash
 git clone https://github.com/hang571589-web/ASPNET-VX23TTK13-tranthihang-LaptopShopWeb.git
 cd ASPNET-VX23TTK13-tranthihang-LaptopShopWeb
 ```
 
-### 2. Cấu hình môi trường
-Sao chép file `.env.example` thành `.env` và cập nhật thông tin nếu cần:
-```bash
-cp .env.example .env
-```
+### Bước 2: Khởi động PostgreSQL với Docker
 
-### 3. Khởi động Database với Docker
 ```bash
+cd docker
 docker-compose up -d
 ```
 
-Database sẽ chạy với cấu hình từ file `.env`:
-- Host: localhost
-- Port: 5432
-- Database: laptopshop
-- Username: postgres
-- Password: postgres123
+Chờ 5-10 giây để PostgreSQL khởi động hoàn toàn.
 
-### 4. Kết nối Database với DBeaver
-Xem hướng dẫn chi tiết tại [DBEAVER_CONNECTION.md](DBEAVER_CONNECTION.md)
+### Bước 3: Update Database (chạy migrations)
 
-### 5. Chạy Migration
 ```bash
-cd src/LaptopShopWeb/LaptopShopWeb
-dotnet ef database update
+cd ../src/LaptopShopWeb/LaptopShopWeb
+dotnet ef database update --project ../LaptopShopWeb.DAL
 ```
 
-### 6. Chạy ứng dụng
+Lệnh này sẽ:
+
+- Tạo 9 tables trong database
+- Seed dữ liệu mẫu: 5 categories, 7 products, 1 admin user
+
+### Bước 4: Trust HTTPS certificate
+
 ```bash
-dotnet run
+dotnet dev-certs https --trust
 ```
 
-Truy cập: `http://localhost:5277`
+### Bước 5: Chạy ứng dụng với HTTPS
 
-## 🗄️ Quản lý Database
-- **DBeaver**: Sử dụng DBeaver để kết nối và quản lý database (xem [DBEAVER_CONNECTION.md](DBEAVER_CONNECTION.md))
-- Connection info từ file `.env`
+```bash
+dotnet watch run --launch-profile https
+```
 
-## 📝 Tính năng đã thực hiện
-- [x] Setup project structure với kiến trúc phân lớp
-- [x] Cấu hình Docker PostgreSQL
-- [x] Cấu hình Git & .gitignore
-- [ ] Thiết kế database schema
-- [ ] Implement Entity models
-- [ ] Implement Data Access Layer
-- [ ] Implement Business Logic Layer
-- [ ] Xây dựng giao diện người dùng
-- [ ] Chức năng quản lý sản phẩm
-- [ ] Chức năng giỏ hàng
-- [ ] Chức năng đặt hàng
-- [ ] Authentication & Authorization
+### Bước 6: Truy cập ứng dụng
 
-## 📚 Tài liệu tham khảo
-- [ASP.NET Core Documentation](https://docs.microsoft.com/aspnet/core)
-- [Entity Framework Core](https://docs.microsoft.com/ef/core)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- **HTTPS**: https://localhost:7253
+- **HTTP**: http://localhost:5277
+
+## 👤 Tài khoản mẫu
+
+### Admin
+
+- Email: `admin@laptopshop.com`
+- Password: (đã được seed với BCrypt hash)
+
+## 🗄️ Cấu trúc Database
+
+9 tables chính:
+
+- **Categories**: Danh mục sản phẩm
+- **Products**: Sản phẩm laptop
+- **ProductVariants**: Biến thể sản phẩm (CPU, RAM, Storage)
+- **ProductImages**: Hình ảnh sản phẩm
+- **Users**: Người dùng (Customer, Admin)
+- **Carts**: Giỏ hàng
+- **CartItems**: Chi tiết giỏ hàng
+- **Orders**: Đơn hàng
+- **OrderDetails**: Chi tiết đơn hàng
+- **Reviews**: Đánh giá sản phẩm
+
+## 🏗️ Kiến trúc Project
+
+```
+src/LaptopShopWeb/
+├── LaptopShopWeb/              # Presentation Layer (Razor Pages)
+├── LaptopShopWeb.BLL/          # Business Logic Layer (Services, DTOs)
+├── LaptopShopWeb.DAL/          # Data Access Layer (Repositories, EF Core)
+└── LaptopShopWeb.Entity/       # Domain Models (Entities)
+```
+
+## 🐳 Docker Commands
+
+```bash
+# Khởi động PostgreSQL
+docker-compose up -d
+
+# Dừng PostgreSQL
+docker-compose down
+
+# Xóa volumes (reset database)
+docker-compose down -v
+
+# Xem logs
+docker-compose logs -f
+```
+
+## 📊 Migration Commands
+
+```bash
+# Update database
+dotnet ef database update --project ../LaptopShopWeb.DAL
+
+# Tạo migration mới
+dotnet ef migrations add MigrationName --project ../LaptopShopWeb.DAL
+
+# Xóa migration cuối
+dotnet ef migrations remove --project ../LaptopShopWeb.DAL
+```
+
+## 🔧 Troubleshooting
+
+### Lỗi: Database connection failed
+
+```bash
+# Kiểm tra PostgreSQL đang chạy
+docker ps
+
+# Restart PostgreSQL
+cd docker
+docker-compose restart
+```
+
+### Lỗi: Port 5277 hoặc 7253 đã được sử dụng
+
+```bash
+# macOS/Linux: Kill process trên port
+lsof -ti:5277,7253 | xargs kill -9
+
+# Hoặc thay đổi port trong Properties/launchSettings.json
+```
+
+### Lỗi: Migration failed
+
+```bash
+# Xóa database và chạy lại
+docker-compose down -v
+docker-compose up -d
+sleep 5
+dotnet ef database update --project ../LaptopShopWeb.DAL
+```
+
+## 📈 Tiến độ hoàn thành: 100%
+
+- ✅ Project structure & Docker setup
+- ✅ Database design & Entity models (9 tables)
+- ✅ Repository Pattern & Unit of Work
+- ✅ Business Logic Layer (5 services, 12 DTOs)
+- ✅ Authentication & Authorization
+- ✅ Customer UI (11 pages)
+- ✅ Admin Dashboard (11 pages)
+- ✅ Shopping Cart & Checkout
+- ✅ Order Management
+- ✅ Bug fixes & Optimization
 
 ## 📧 Liên hệ
+
 - GitHub: [@hang571589-web](https://github.com/hang571589-web)
+- Repository: [LaptopShopWeb](https://github.com/hang571589-web/ASPNET-VX23TTK13-tranthihang-LaptopShopWeb)
 
 ---
-*Cập nhật lần cuối: Tháng 11, 2025*
+
+_Cập nhật: Tháng 12, 2025_

@@ -7,97 +7,68 @@
 
 ---
 
-## 📋 MỤC TIÊU TUẦN 01
-- Khởi tạo và cấu hình project ASP.NET Core
-- Thiết lập môi trường phát triển
-- Cấu hình Docker và Database
-- Setup Git repository
-
----
-
-## ✅ CÔNG VIỆC ĐÃ HOÀN THÀNH
+## 📋 CÔNG VIỆC ĐÃ HOÀN THÀNH
 
 ### 1. Khởi tạo Project Structure
-- ✅ Tạo solution `LaptopShopWeb.sln`
-- ✅ Tạo 4 projects theo kiến trúc phân lớp:
-  - `LaptopShopWeb` - Web/Presentation Layer (Razor Pages)
-  - `LaptopShopWeb.BLL` - Business Logic Layer
-  - `LaptopShopWeb.DAL` - Data Access Layer
-  - `LaptopShopWeb.Entity` - Entity/Model Layer
-- ✅ Cấu hình project dependencies và references
 
-### 2. Cấu hình Docker & Database
-- ✅ Tạo `docker-compose.yml` cho PostgreSQL 16
-- ✅ Thêm PgAdmin 4 để quản lý database
-- ✅ Tạo file `.env` và `.env.example` cho environment variables
-- ✅ Cấu hình volumes và networks cho Docker containers
-- ✅ Test kết nối PostgreSQL thành công
+- Tạo solution LaptopShopWeb.sln với kiến trúc phân lớp
+- Tạo 4 projects chính:
+  - LaptopShopWeb: Web/Presentation Layer (Razor Pages)
+  - LaptopShopWeb.BLL: Business Logic Layer
+  - LaptopShopWeb.DAL: Data Access Layer
+  - LaptopShopWeb.Entity: Entity/Model Layer
+- Cấu hình project dependencies và references giữa các layers
 
-**Chi tiết cấu hình:**
-- PostgreSQL: port 5432
-- PgAdmin: port 5050
-- Database name: `laptopshop`
-- Health check và auto-restart được cấu hình
+### 2. Cấu hình Môi trường Phát triển
+
+- Cài đặt .NET Core 9.0 SDK
+- Setup Docker Desktop
+- Cấu hình Docker Compose cho PostgreSQL 15
+- Thêm PgAdmin 4 để quản lý database (port 5050)
+- Tạo file .env và .env.example cho environment variables
+- Cấu hình volumes, networks và health check cho containers
+- Test kết nối database thành công (port 5432)
 
 ### 3. Setup Git Repository
-- ✅ Tạo repository trên GitHub
-- ✅ Tạo file `.gitignore` cho ASP.NET project
-  - Loại bỏ bin/, obj/ folders
-  - Loại bỏ .vs/, .idea/ IDE configs
-  - Loại bỏ file .env (bảo mật)
-  - Loại bỏ build artifacts
-- ✅ Push initial commit lên GitHub
+
+- Tạo repository trên GitHub: LaptopShopWeb
+- Tạo file .gitignore loại trừ: bin/, obj/, .vs/, .idea/, .env
+- Push initial commit lên GitHub
+- Setup branch protection và workflow
 
 ### 4. Documentation
-- ✅ Tạo `README.md` với:
-  - Giới thiệu dự án
-  - Hướng dẫn cài đặt chi tiết
-  - Kiến trúc hệ thống
-  - Công nghệ sử dụng
-  - Checklist tính năng
-- ✅ Setup progress-report folder
+
+- Viết README.md với giới thiệu dự án và hướng dẫn cài đặt
+- Tạo progress-report folder để theo dõi tiến độ
+- Document kiến trúc hệ thống và công nghệ sử dụng
 
 ---
 
-## 📂 CẤU TRÚC PROJECT
+## � KẾ HOẠCH TUẦN TIẾP THEO
 
-```
-LaptopShopWeb/
-├── docker/
-│   ├── docker-compose.yml
-│   ├── .env
-│   └── .env.example
-├── src/
-│   └── LaptopShopWeb/
-│       ├── LaptopShopWeb.sln
-│       ├── LaptopShopWeb/          # Web Layer
-│       ├── LaptopShopWeb.BLL/      # Business Logic
-│       ├── LaptopShopWeb.DAL/      # Data Access
-│       └── LaptopShopWeb.Entity/   # Models
-├── progress-report/
-├── .gitignore
-└── README.md
-```
+### Tuần 02 - Thiết kế Database & Entity Models
+
+- Thiết kế database schema với các bảng chính
+- Implement Entity Models cho: Categories, Products, Users, Orders, Reviews
+- Setup Entity Framework Core và ApplicationDbContext
+- Tạo và chạy database migrations đầu tiên
+- Seed dữ liệu mẫu (categories, products, admin user)
+- Cấu hình relationships và foreign keys
+- Thêm indexes và constraints
 
 ---
 
-## 🛠️ CÔNG NGHỆ ĐÃ SỬ DỤNG
+## 📊 TỔNG KẾT
 
-| Công nghệ | Phiên bản | Mục đích |
-|-----------|-----------|----------|
-| .NET Core | 9.0 | Framework chính |
-| PostgreSQL | 16-alpine | Database |
-| Docker | Latest | Containerization |
-| PgAdmin 4 | Latest | Database Management |
-| Git/GitHub | - | Version Control |
+**Hoàn thành**: 100%
 
----
+- ✅ Project structure
+- ✅ Docker & Database setup
+- ✅ Git repository
+- ✅ Documentation
 
-## 📊 TIẾN ĐỘ THỰC HIỆN
+**Công nghệ**: .NET Core 9.0, PostgreSQL 15, Docker, Git/GitHub
 
-- [x] Khởi tạo project structure - **100%**
-- [x] Cấu hình Docker & PostgreSQL - **100%**
-- [x] Setup Git repository - **100%**
 - [x] Viết documentation - **100%**
 - [ ] Thiết kế Database Schema - **0%**
 - [ ] Implement Entity Models - **0%**
@@ -109,16 +80,19 @@ LaptopShopWeb/
 ## 🎯 KẾ HOẠCH TUẦN 02
 
 1. **Thiết kế Database**
+
    - Vẽ ERD diagram
    - Định nghĩa các bảng: Products, Categories, Users, Orders, OrderDetails
    - Xác định relationships và constraints
 
 2. **Implement Entity Models**
+
    - Tạo các entity classes trong `LaptopShopWeb.Entity`
    - Định nghĩa properties và relationships
    - Thêm Data Annotations
 
 3. **Setup Entity Framework Core**
+
    - Cài đặt EF Core packages
    - Tạo DbContext
    - Cấu hình connection string
@@ -132,11 +106,11 @@ LaptopShopWeb/
 
 ## 🔧 VẤN ĐỀ GẶP PHẢI & GIẢI QUYẾT
 
-| Vấn đề | Giải pháp |
-|--------|-----------|
-| Chưa rõ kiến trúc phân lớp | Nghiên cứu Layered Architecture pattern |
-| Docker configuration | Tham khảo PostgreSQL Docker documentation |
-| Git ignore files | Sử dụng template .gitignore cho ASP.NET |
+| Vấn đề                     | Giải pháp                                 |
+| -------------------------- | ----------------------------------------- |
+| Chưa rõ kiến trúc phân lớp | Nghiên cứu Layered Architecture pattern   |
+| Docker configuration       | Tham khảo PostgreSQL Docker documentation |
+| Git ignore files           | Sử dụng template .gitignore cho ASP.NET   |
 
 ---
 
@@ -151,7 +125,7 @@ LaptopShopWeb/
 
 ## 📸 SCREENSHOTS
 
-*Sẽ bổ sung trong các tuần tiếp theo khi có giao diện*
+_Sẽ bổ sung trong các tuần tiếp theo khi có giao diện_
 
 ---
 

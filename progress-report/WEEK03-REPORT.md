@@ -7,111 +7,117 @@
 
 ---
 
-## 📋 MỤC TIÊU TUẦN 03
-- Implement Repository Pattern & Unit of Work
-- Develop Business Logic Layer (BLL)
-- Build Authentication System
-- Create Customer-facing UI with Razor Pages
-- Implement Shopping Cart & Checkout Flow
+## 📋 CÔNG VIỆC ĐÃ HOÀN THÀNH
+
+### 1. Data Access Layer - Repository Pattern
+
+- Implement Generic Repository với interface IRepository<T>
+- Tạo methods: GetByIdAsync, GetAllAsync, FindAsync, AddAsync, Update, Delete, CountAsync, ExistsAsync, GetPagedAsync
+- Develop 5 Specific Repositories:
+  - ProductRepository: GetProductsByCategoryAsync, GetFeaturedProductsAsync, SearchProductsAsync, GetActiveProductsAsync
+  - CategoryRepository: GetCategoryWithProductsAsync, GetActiveCategoriesAsync, GetCategoryBySlugAsync
+  - OrderRepository: GetOrdersByUserIdAsync, GetOrderWithDetailsAsync, GenerateOrderNumberAsync
+  - UserRepository: GetByEmailAsync, EmailExistsAsync, GetUsersByRoleAsync
+  - CartRepository: GetCartByUserIdAsync, GetCartWithItemsAsync, ClearCartAsync, GetCartTotalAsync
+- Implement Unit of Work Pattern: Transaction management (BeginTransaction, Commit, Rollback), centralized SaveChanges
+
+### 2. Business Logic Layer
+
+- Tạo 12 DTOs: ProductDto, CategoryDto, UserDto, OrderDto, OrderDetailDto, CartDto, CartItemDto, ReviewDto, ProductImageDto, ProductVariantDto, CreateOrderDto, UpdateUserDto
+- Implement Entity Mapper với bidirectional mapping (Entity ↔ DTO)
+- Develop 5 Services với tổng 46 methods:
+  - ProductService (11 methods): GetAllProducts, GetActiveProducts, GetFeatured, GetByCategory, Search, CRUD operations
+  - CategoryService (6 methods): GetAll, GetActive, GetById, CRUD operations
+  - CartService (9 methods): GetCartByUserId, AddToCart, UpdateQuantity, RemoveFromCart, ClearCart, GetTotal
+  - OrderService (9 methods): GetOrdersByUserId, CreateOrder, UpdateStatus, GetByStatus, GetRecentOrders
+  - UserService (11 methods): Register, Login, UpdateProfile, ChangePassword, EmailExists, UpdateRole
+
+### 3. Entity Models Enhancement
+
+- Thêm Cart và CartItem entities với relationships: User ↔ Cart (One-to-One), Cart ↔ CartItems (One-to-Many)
+- Tạo ProductVariant Entity: CPU, RAM, Storage variations với Price, StockQuantity, SKU tracking
+- Chạy migration AddCartAndVariants: tạo 3 tables mới (Carts, CartItems, ProductVariants)
+
+### 4. Authentication & Authorization
+
+- Implement AuthHelper với 9 static methods: SignInAsync, SignOutAsync, GetUserId, GetUserEmail, GetUserRole, IsAuthenticated, IsInRole
+- Cấu hình Cookie-based authentication (7-day persistent)
+- Setup Authorization Policies: CustomerOnly, ManagerOnly với role-based access control
+- Implement BCrypt password hashing và verification
+
+### 5. User Interface - Customer Pages
+
+- Tạo responsive layout với Bootstrap 5, custom CSS (400+ lines), Font Awesome icons
+- Develop 11 customer-facing Razor Pages:
+  - Authentication: Login, Register, Logout (3 pages)
+  - Products: Index (listing với filter), Details (với variants, reviews) (2 pages)
+  - Shopping Cart: Index, Checkout (2 pages)
+  - Orders: Index (history), Details, Success (3 pages)
+  - Profile: Update info, change password (1 page)
+- Implement search, category filter, product rating display
+- Build shopping cart management: add to cart, update quantity, remove items
+- Create checkout flow với shipping form và order summary
+
+### 6. Seed Data
+
+- Seed 1 admin user: admin@laptopshop.com với BCrypt hashed password
+- Seed 5 categories: Gaming, Văn Phòng, Đồ Họa, Mỏng Nhẹ, Cao Cấp
+- Seed 7 sample products từ các hãng: ASUS ROG, Dell, MacBook Pro, MSI, HP, Lenovo, Acer
 
 ---
 
-## ✅ CÔNG VIỆC ĐÃ HOÀN THÀNH
+## 📝 KẾ HOẠCH TUẦN TIẾP THEO
 
-### 1. Data Access Layer (DAL) - Repository Pattern
-- ✅ **Base Repository**: Generic repository với CRUD operations
-  - `IRepository<T>` interface với methods: GetByIdAsync, GetAllAsync, FindAsync, AddAsync, Update, Delete, CountAsync, ExistsAsync, GetPagedAsync
-  - `Repository<T>` implementation với Entity Framework Core
-  
-- ✅ **Specific Repositories**: 5 repositories chuyên biệt
-  - `ProductRepository`: GetProductsByCategoryAsync, GetFeaturedProductsAsync, GetProductWithVariantsAsync, SearchProductsAsync, GetActiveProductsAsync
-  - `CategoryRepository`: GetCategoryWithProductsAsync, GetActiveCategoriesAsync, GetCategoryBySlugAsync
-  - `OrderRepository`: GetOrdersByUserIdAsync, GetOrderWithDetailsAsync, GenerateOrderNumberAsync, GetOrdersByStatusAsync
-  - `UserRepository`: GetByEmailAsync, EmailExistsAsync, GetUsersByRoleAsync
-  - `CartRepository`: GetCartByUserIdAsync, GetCartWithItemsAsync, ClearCartAsync, GetCartTotalAsync
+### Tuần 04 - Admin Dashboard & Management
 
-- ✅ **Unit of Work Pattern**:
-  - Transaction management (BeginTransaction, Commit, Rollback)
-  - Centralized SaveChanges
-  - Repository coordination
+- Develop Admin Layout và Dashboard với statistics cards
+- Implement Product Management CRUD (Create, Read, Update, Delete)
+- Build Category Management pages
+- Create Order Management với status update functionality
+- Develop User Management với role assignment
+- Add search và filtering features cho admin pages
+- Implement image upload cho products
+- Create reports và statistics pages
 
-### 2. Business Logic Layer (BLL)
-- ✅ **DTOs (Data Transfer Objects)**: 12 DTOs
-  - ProductDto, CategoryDto, UserDto, OrderDto, OrderDetailDto
-  - CartDto, CartItemDto, ReviewDto, ProductImageDto, ProductVariantDto
-  - **CreateOrderDto**: UserId, ShippingAddress, City, PhoneNumber, Notes, PaymentMethod
-  - **UpdateUserDto**: FullName, PhoneNumber, Address
-  
-- ✅ **Entity Mapper**: 
-  - Bidirectional mapping (Entity ↔ DTO)
-  - Extension methods cho clean code
-  - Support cho nested objects (Product với Category, Variants, Reviews)
+---
 
-- ✅ **Service Layer**: 5 services hoàn chỉnh
-  - **ProductService** (11 methods): GetAllProducts, GetActiveProducts, GetFeatured, GetByCategory, GetById, GetWithDetails, Search, Create, Update, Delete, UpdateStock
-  - **CategoryService** (6 methods): GetAll, GetActive, GetById, Create, Update, Delete
-  - **CartService** (9 methods): GetCartByUserId, GetCartWithDetails, AddToCart, UpdateCartItem, UpdateQuantity, RemoveFromCart (2 overloads), ClearCart, GetTotal
-  - **OrderService** (9 methods): GetOrdersByUserId, GetOrderById, GetOrderWithDetails, GetByOrderNumber, CreateOrder (2 overloads), UpdateStatus, GetByStatus, GetRecentOrders
-  - **UserService** (11 methods): GetById, GetByEmail, GetByRole, Register, Login, UpdateProfile, UpdateAsync, ChangePassword (2 overloads), EmailExists, UpdateRole, ToggleStatus
+## 📊 TỔNG KẾT
 
-### 3. Entity Models Enhancement
-- ✅ **Cart & CartItem Entities**:
-  - One-to-One relationship: User ↔ Cart
-  - One-to-Many: Cart ↔ CartItems
-  - Support ProductVariant trong cart
-  
-- ✅ **ProductVariant Entity**:
-  - CPU, RAM, Storage, GraphicsCard variations
-  - Price, DiscountPrice, StockQuantity per variant
-  - SKU tracking
+**Hoàn thành**: 100%
 
-- ✅ **Database Migration**:
-  - Migration: `AddCartAndVariants`
-  - Tables: Carts, CartItems, ProductVariants
-  - Foreign key relationships configured
+- ✅ Repository Pattern & Unit of Work (6 repositories)
+- ✅ Business Logic Layer (5 services, 12 DTOs)
+- ✅ Entity enhancement (Cart, CartItem, ProductVariant)
+- ✅ Authentication System với BCrypt
+- ✅ Customer UI (11 Razor Pages)
+- ✅ Shopping Cart & Checkout flow
 
-### 4. Authentication & Authorization
-- ✅ **AuthHelper** - Centralized authentication manager:
-  - Cookie-based authentication (7-day persistent)
-  - 9 static methods: SignInAsync, SignOutAsync, GetUserId, GetUserEmail, GetUserName, GetName, GetUserRole, IsAuthenticated, IsInRole
-  - Claims management: NameIdentifier, Email, Name, Role
-  
-- ✅ **Authorization Policies**:
-  - `CustomerOnly`: Customers and Managers
-  - `ManagerOnly`: Managers only
-  - Role-based access control
+**Tiến độ dự án**: 70%
 
-- ✅ **Password Security**:
-  - BCrypt hashing algorithm
-  - Secure password verification
+**Thống kê**:
 
-### 5. User Interface - Razor Pages
-- ✅ **Layout & Theme**:
-  - Modern red-black-white color scheme
-  - Responsive Bootstrap 5 layout
-  - Custom CSS với 400+ lines (gradients, animations, hover effects)
-  - Font Awesome 6.4.0 icons
-  - Navbar với conditional rendering based on authentication
-
-- ✅ **Authentication Pages** (3 pages):
-  - `/Login`: Email/password login với Remember Me
-  - `/Register`: Full registration form với validation
-  - `/Logout`: Sign out handler
+- Backend: 9 entities, 6 repositories, 5 services, 12 DTOs
+- Frontend: 11 pages, 400+ lines CSS
+- Database: 9 tables, 2 migrations
 
 - ✅ **Product Pages** (2 pages):
+
   - `/Products/Index`: Product listing với search, category filter, ratings
   - `/Products/Details`: Product details, variants selection, add to cart, reviews
 
 - ✅ **Shopping Cart Flow** (2 pages):
+
   - `/Cart/Index`: Cart management (update quantity, remove items, clear cart)
   - `/Checkout/Index`: Checkout form với shipping info, order summary
 
 - ✅ **Order Management** (3 pages):
+
   - `/Orders/Index`: Order history với status badges
   - `/Orders/Details`: Order details với shipping info, items
   - `/Orders/Success`: Order confirmation page
 
 - ✅ **User Profile** (1 page):
+
   - `/Profile`: Update profile info, change password với BCrypt
 
 - ✅ **Home Page**:
@@ -120,6 +126,7 @@
 **Tổng cộng: 11 customer-facing pages**
 
 ### 6. Seed Data
+
 - ✅ **Location**: `LaptopShopWeb.DAL/ApplicationDbContext.cs` (SeedData method)
 - ✅ **Manager Account**:
   - **Email**: `admin@laptopshop.com`
@@ -127,10 +134,8 @@
   - **Role**: Admin
   - **FullName**: Administrator
   - **Phone**: 0123456789
-  
 - ✅ **Categories**: 5 categories
   - Laptop Gaming, Laptop Văn Phòng, Laptop Đồ Họa, Laptop Mỏng Nhẹ, Laptop Cao Cấp
-  
 - ✅ **Sample Products**: 7 products
   - ASUS ROG Strix G15 (Gaming - 29,990,000đ)
   - Dell Inspiron 15 (Office - 15,990,000đ)
@@ -145,18 +150,21 @@
 ## 🔧 KỸ THUẬT VÀ CÔNG NGHỆ
 
 ### Architecture Pattern
+
 - **Repository Pattern**: Abstraction layer cho data access
 - **Unit of Work**: Transaction coordination
 - **Service Layer**: Business logic separation
 - **DTO Pattern**: Data transfer optimization
 
 ### Security
+
 - **BCrypt**: Password hashing
 - **Cookie Authentication**: Persistent sessions
 - **Claims-based Authorization**: Role management
 - **SQL Injection Protection**: Entity Framework parameterization
 
 ### UI/UX
+
 - **Responsive Design**: Mobile-first approach
 - **CSS Variables**: Consistent theming
 - **Animations**: Smooth transitions and hover effects
@@ -167,6 +175,7 @@
 ## 📊 THỐNG KÊ CODE
 
 ### Backend Statistics
+
 - **Entities**: 9 classes (User, Product, Category, Order, OrderDetail, Review, ProductImage, ProductVariant, Cart, CartItem)
 - **Repositories**: 5 interfaces + 5 implementations + 1 generic base
 - **Services**: 5 interfaces + 5 implementations
@@ -174,11 +183,13 @@
 - **Helper Classes**: 2 (AuthHelper, EntityMapper)
 
 ### Frontend Statistics
+
 - **Razor Pages**: 11 pages
 - **CSS Files**: 1 custom.css (400+ lines)
 - **Total Lines of Code**: ~60,000+ (including migrations)
 
 ### Database
+
 - **Tables**: 9 main tables
 - **Seed Data**: 1 admin user, 5 categories, 7 products
 - **Migrations**: 2 migrations
@@ -188,33 +199,40 @@
 ## 🐛 VẤN ĐỀ ĐÃ GIẢI QUYẾT
 
 ### 1. Property Name Conflicts
+
 **Issue**: `ProfileModel.User` và `CheckoutModel.User` conflict với `PageModel.User` (ClaimsPrincipal)
 
 **Solution**: Renamed to `CurrentUser` property và updated all view references
 
 ### 2. Missing DTO Properties
+
 **Issue**: UI pages expect properties không có trong DTOs (Items, TotalItems, VariantDisplayName, etc.)
 
 **Solution**: Added alias properties và helper properties to DTOs:
+
 - CartDto: Items → CartItems, TotalItems, TotalAmount
 - OrderDto: Items → OrderDetails, CustomerName, City, PhoneNumber, TotalItems
 - CartItemDto: VariantDisplayName, UnitPrice, TotalPrice
 - OrderDetailDto: VariantDisplayName, TotalPrice
 
 ### 3. Service Method Overloads
+
 **Issue**: Different pages needed different method signatures
 
 **Solution**: Added method overloads:
+
 - ICartService: UpdateCartItemQuantityAsync, RemoveFromCartAsync
 - IUserService: GetByIdAsync (alias), UpdateAsync, ChangePasswordAsync (hashedPassword)
 - IOrderService: GetOrderWithDetailsAsync (alias), CreateOrderAsync returning orderId
 
 ### 4. Missing Helper Methods
+
 **Issue**: Layout cần AuthHelper.GetName() nhưng chỉ có GetUserName()
 
 **Solution**: Added GetName() alias method pointing to GetUserName()
 
 ### 5. BCrypt Password Verification
+
 **Issue**: Profile page cần verify old password nhưng UserDto không có PasswordHash
 
 **Solution**: Added PasswordHash property to UserDto (for internal use only)
@@ -224,6 +242,7 @@
 ## 📈 TIẾN ĐỘ DỰ ÁN
 
 ### Hoàn thành
+
 - ✅ Database Design & Migrations (100%)
 - ✅ Entity Models (100%)
 - ✅ Repository Pattern (100%)
@@ -233,12 +252,14 @@
 - ✅ Shopping Cart & Checkout (100%)
 
 ### Đang thực hiện
+
 - 🔄 Manager Dashboard UI (0%)
 - 🔄 Product Management CRUD (0%)
 - 🔄 Order Management for Managers (0%)
 - 🔄 User Management (0%)
 
 ### Kế hoạch tuần tới
+
 - [ ] Manager Layout & Dashboard
 - [ ] Product CRUD Pages (/Manager/Products)
 - [ ] Category CRUD Pages (/Manager/Categories)
@@ -251,6 +272,7 @@
 ## 🎯 BÀI HỌC KINH NGHIỆM
 
 ### Technical Lessons
+
 1. **Property Naming**: Careful với inherited properties trong PageModel (User là ClaimsPrincipal)
 2. **DTO Design**: Alias properties useful cho backward compatibility
 3. **Method Overloading**: Multiple signatures hỗ trợ flexible API usage
@@ -258,6 +280,7 @@
 5. **Transaction Management**: Unit of Work essential cho complex operations (checkout process)
 
 ### Development Process
+
 1. **Incremental Building**: Build từng layer, test trước khi move on
 2. **Error Handling**: Try-catch và meaningful error messages quan trọng
 3. **Code Reusability**: Helper classes (AuthHelper, EntityMapper) save time
@@ -268,15 +291,19 @@
 ## 📸 SCREENSHOTS (Optional)
 
 ### Home Page
+
 ![Home Page](../screenshots/week03-home.png)
 
 ### Product Listing
+
 ![Product Listing](../screenshots/week03-products.png)
 
 ### Shopping Cart
+
 ![Shopping Cart](../screenshots/week03-cart.png)
 
 ### Checkout
+
 ![Checkout](../screenshots/week03-checkout.png)
 
 ---
@@ -361,10 +388,12 @@ git commit -m "build: fix all compilation errors, project builds successfully"
 ## 📝 GHI CHÚ
 
 ### Tài khoản test
+
 - **Manager**: `admin@laptopshop.com` (password cần reset)
 - **Customer**: Tạo mới qua Register page
 
 ### URLs quan trọng
+
 - Home: `/`
 - Products: `/Products/Index`
 - Cart: `/Cart/Index`
@@ -373,6 +402,7 @@ git commit -m "build: fix all compilation errors, project builds successfully"
 - Profile: `/Profile`
 
 ### Database Connection
+
 - Sử dụng PostgreSQL
 - Connection string trong `appsettings.json`
 - Run migrations: `dotnet ef database update`
