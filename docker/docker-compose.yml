@@ -1,23 +1,27 @@
 services:
-  postgres:
-    image: postgres:15
-    container_name: laptopshop-postgres
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: laptopshop-sqlserver
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres123}
-      POSTGRES_DB: ${POSTGRES_DB:-laptopshop}
-      PGDATA: /var/lib/postgresql/data/pgdata
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD:-YourStrong!Passw0rd}
+      MSSQL_PID: ${MSSQL_PID:-Developer}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${MSSQL_PORT:-1433}:1433"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - sqlserver_data:/var/opt/mssql
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools2/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD:-YourStrong!Passw0rd} -Q 'SELECT 1' || exit 1",
+        ]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 30s
 
 volumes:
-  postgres_data:
+  sqlserver_data:
     driver: local
